@@ -1,99 +1,61 @@
 import React from 'react';
 
-function Icon() {
+interface LoadingIconProps {
+  size?: number;
+  color?: string;
+}
+
+function LoadingIcon({ size = 48, color = 'currentColor' }: LoadingIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="48px"
-      height="48px"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="xMidYMid"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <g>
-        <circle cx="60" cy="50" r="4" fill="#7cb9e8">
-          <animate
-            attributeName="cx"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="95;35"
-            keyTimes="0;1"
-            begin="-0.6767000000000001s"
-          ></animate>
-          <animate
-            attributeName="fill-opacity"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="0;1;1"
-            keyTimes="0;0.2;1"
-            begin="-0.6767000000000001s"
-          ></animate>
-        </circle>
-        <circle cx="60" cy="50" r="4" fill="#7cb9e8">
-          <animate
-            attributeName="cx"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="95;35"
-            keyTimes="0;1"
-            begin="-0.33330000000000004s"
-          ></animate>
-          <animate
-            attributeName="fill-opacity"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="0;1;1"
-            keyTimes="0;0.2;1"
-            begin="-0.33330000000000004s"
-          ></animate>
-        </circle>
-        <circle cx="60" cy="50" r="4" fill="#7cb9e8">
-          <animate
-            attributeName="cx"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="95;35"
-            keyTimes="0;1"
-            begin="0s"
-          ></animate>
-          <animate
-            attributeName="fill-opacity"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="0;1;1"
-            keyTimes="0;0.2;1"
-            begin="0s"
-          ></animate>
-        </circle>
-      </g>
-      <g transform="translate(-15 0)">
-        <path
-          d="M50 50L20 50A30 30 0 0 0 80 50Z"
-          fill="#1e88e5"
-          transform="rotate(90 50 50)"
-        ></path>
-        <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#1e88e5">
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="0 50 50;45 50 50;0 50 50"
-            keyTimes="0;0.5;1"
-          ></animateTransform>
-        </path>
-        <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#1e88e5">
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            repeatCount="indefinite"
-            dur="0.9900990099009901s"
-            values="0 50 50;-45 50 50;0 50 50"
-            keyTimes="0;0.5;1"
-          ></animateTransform>
-        </path>
-      </g>
+      <line x1="12" y1="2" x2="12" y2="6">
+        <animate
+          attributeName="y2"
+          repeatCount="indefinite"
+          dur="1s"
+          values="6;2;6"
+          keyTimes="0;0.5;1"
+        />
+      </line>
+      <line x1="12" y1="18" x2="12" y2="22">
+        <animate
+          attributeName="y1"
+          repeatCount="indefinite"
+          dur="1s"
+          values="18;22;18"
+          keyTimes="0;0.5;1"
+        />
+      </line>
+      <line x1="2" y1="12" x2="6" y2="12">
+        <animate
+          attributeName="x2"
+          repeatCount="indefinite"
+          dur="1s"
+          values="6;2;6"
+          keyTimes="0;0.5;1"
+        />
+      </line>
+      <line x1="18" y1="12" x2="22" y2="12">
+        <animate
+          attributeName="x1"
+          repeatCount="indefinite"
+          dur="1s"
+          values="18;22;18"
+          keyTimes="0;0.5;1"
+        />
+      </line>
     </svg>
   );
 }
 
-export default Icon;
+export default LoadingIcon;

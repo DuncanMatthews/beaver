@@ -4,103 +4,80 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --background-start-rgb: 15, 23, 42;
+  --background-end-rgb: 30, 41, 59;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  body {
+    @apply text-neutral-100 from-[rgb(var(--background-start-rgb))] to-[rgb(var(--background-end-rgb))];
+  }
+
+  code {
+    @apply font-mono;
+  }
 }
 
-.markdownHolder {
-  font-size: 16px;
+@layer components {
+  .markdownHolder {
+    @apply text-base leading-relaxed;
+  }
+
+  .markdownHolder p {
+    @apply mb-4;
+  }
+
+  .markdownHolder li p {
+    @apply mb-0;
+  }
+
+  .markdownHolder ol {
+    @apply list-decimal list-inside mb-4;
+  }
+
+  .markdownHolder ul {
+    @apply list-disc list-inside mb-4;
+  }
+
+  .markdownHolder h1 {
+    @apply text-3xl font-bold mb-4 text-primary-500;
+  }
+
+  .markdownHolder h2 {
+    @apply text-2xl font-semibold mb-3 text-primary-400;
+  }
+
+  .markdownHolder h3 {
+    @apply text-xl font-semibold mb-2 text-primary-300;
+  }
+
+  .markdownHolder h4,
+  .markdownHolder h5,
+  .markdownHolder h6 {
+    @apply text-lg font-medium mb-2 text-primary-200;
+  }
+
+  pre {
+    @apply my-4 p-4 rounded-lg bg-neutral-800 text-neutral-100 overflow-x-auto text-sm;
+  }
+
+  :not(pre) > code {
+    @apply bg-neutral-700 text-neutral-100 px-1.5 py-0.5 rounded text-sm;
+  }
+
+  blockquote {
+    @apply pl-4 py-1 border-l-4 border-primary-500 text-neutral-300 italic my-4;
+  }
 }
 
-.markdownHolder p {
-  @apply mb-[8px];
+@layer utilities {
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
 
-/* if p is inside li */
-.markdownHolder li p {
-  @apply mb-[0px];
-}
-
-.markdownHolder ol {
-  @apply list-inside list-decimal;
-}
-
-.markdownHolder ul {
-  @apply list-inside list-disc;
-}
-
-.markdownHolder h1 {
-  @apply text-xl font-bold mb-[8px];
-}
-
-.markdownHolder h2 {
-  @apply text-lg font-bold mb-[8px];
-}
-
-.markdownHolder h3 {
-  @apply text-base font-bold mb-[8px];
-}
-
-.markdownHolder h4,
-.markdownHolder h6,
-.markdownHolder h6 {
-  @apply text-base font-bold mb-[8px];
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-pre {
-  margin: 0.5em 0;
-  overflow: auto;
-  border-radius: 0.3em;
-  color: #fff;
-  font-size: 13px !important;
-}
-
-:not(pre) > code {
-  background-color: #222a39 !important;
-  color: #fff !important;
-  padding: 2px !important;
-  border-radius: 2px !important;
-}
-.markdownHolder {
-  font-size: 16px !important;
-  padding-top: 4px !important;
-}
-.markdownHolder p {
-  margin: 0px;
-}
 @media (min-width: 768px) {
   .inset-0 {
     inset: 0px !important;
   }
-}
-ul {
-  padding: 0px;
-  list-style-type: disc;
-  list-style-position: inside;
-}
-
-ol {
-  padding: 0px;
-  list-style: decimal;
-  list-style-position: inside;
-}
-blockquote {
-  margin: 0px;
-  padding: 4px 0px;
-  font-size: 12px;
-  font-weight: 500;
 }

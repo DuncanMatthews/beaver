@@ -2,6 +2,7 @@ import { useState } from "react";
 import Loading from "../components/SvgComps/loading";
 import axios from "axios";
 import { GithubButton } from "./GithubButton";
+import LoadingIcon from "../components/SvgComps/loading";
 
 export const ActionComponent = ({
   setSessionId,
@@ -15,6 +16,7 @@ export const ActionComponent = ({
   const [instructions, setInstructions] = useState<string>("");
 
   const generateContent = (variant: string) => {
+    setLoading(true);
     axios
       .post("/api/content", {
         sessionId: sessionId,
@@ -22,16 +24,7 @@ export const ActionComponent = ({
         instructions,
       })
       .then(() => {
-        const a = document.createElement("a");
-        a.setAttribute(
-          "href",
-          `${window.location.origin}/${variant}/${sessionId}`
-        );
-        a.setAttribute("target", "_blank");
-        a.setAttribute("hidden", "true");
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        window.open(`${window.location.origin}/${variant}/${sessionId}`, "_blank");
       })
       .catch(() => {
         alert("Something went wrong, please try again.");
@@ -42,96 +35,78 @@ export const ActionComponent = ({
   };
 
   const startChat = () => {
-    const a = document.createElement("a");
-    a.setAttribute("href", `${window.location.origin}/chat/${sessionId}`);
-    a.setAttribute("target", "_blank");
-    a.setAttribute("hidden", "true");
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    window.open(`${window.location.origin}/chat/${sessionId}`, "_blank");
   };
 
+  const actions = [
+    { id: "tweet", label: "Generate Twitter thread" },
+    { id: "blog", label: "Generate a blog post" },
+    { id: "chat", label: "Chat with it" },
+  ];
+
   return (
-    <div className="flex flex-col gap-[8px] w-full items-center">
-      <div className="animate-fadeIn max-w-[600px] w-full bg-[#191724] rounded-md flex flex-col gap-[16px] p-[16px]">
-        <span
-          onClick={() => {
-            setSessionId("");
-          }}
-          className="text-sm cursor-pointer font-thin"
-        >{`<- Go Back`}</span>
-        <span className="">What would you like to do with this video?</span>
-        <div className="flex flex-col gap-[8px]">
-          <button
-            onClick={() => setAction("tweet")}
-            type="button"
-            className={`${
-              action === "tweet" ? "bg-gray-600 text-white" : "text-gray-400"
-            } border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border-gray-600  hover:text-white hover:bg-gray-600 focus:ring-gray-800`}
-          >
-            Generate twitter thread
-          </button>
-          <button
-            onClick={() => setAction("blog")}
-            type="button"
-            className={`${
-              action === "blog" ? "bg-gray-600 text-white" : "text-gray-400"
-            } border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border-gray-600  hover:text-white hover:bg-gray-600 focus:ring-gray-800`}
-          >
-            Generate a blog post
-          </button>
-          <button
-            onClick={() => setAction("chat")}
-            type="button"
-            className={`${
-              action === "chat" ? "bg-gray-600 text-white" : "text-gray-400"
-            } border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border-gray-600  hover:text-white hover:bg-gray-600 focus:ring-gray-800`}
-          >
-            Chat with it
-          </button>
+    <div className="w-full  max-w-2xl mx-auto px-4 py-8">
+      <div className=" dark:bg-neutral-800 rounded-lg  p-6 animate-fadeIn">
+        <button
+          onClick={() => setSessionId("")}
+          className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 mb-4"
+        >
+          ← Go Back
+        </button>
+        
+        <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
+          What would you like to do with this video?
+        </h2>
+        
+        <div className="space-y-3 mb-6">
+          {actions.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setAction(item.id)}
+              className={`w-full text-left px-4 py-3 rounded-lg shadow transition-colors ${
+                action === item.id
+                  ? "bg-primary-600 text-white"
+                  : "bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600"
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
-        {action && action !== "chat" ? (
+        
+        {action && action !== "chat" && (
           <>
             <textarea
               onChange={(e) => setInstructions(e.target.value)}
               value={instructions}
-              id="instructions"
               rows={4}
-              className="block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 mb-4 text-sm rounded-lg border bg-neutral-50 dark:bg-neutral-700 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-neutral-100 focus:ring-primary-500 focus:border-primary-500"
               placeholder="Any instructions? (optional)"
-            ></textarea>
+            />
             <button
-              onClick={() => {
-                setLoading(true);
-                generateContent(action);
-              }}
-              type="button"
-              className={`${
-                loading
-                  ? "from-purple-600/10 to-blue-500/10 "
-                  : "from-purple-600 to-blue-500"
-              } w-full text-white bg-gradient-to-br hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 h-[40px] flex justify-center items-center font-medium rounded-lg text-sm text-center mr-2 mb-2`}
+              onClick={() => generateContent(action)}
+              disabled={loading}
+              className={`w-full py-3 text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              {!loading ? "Generate" : <Loading />}
+              {loading ?<LoadingIcon size={24} color="#1e88e5" />
+ : "Generate"}
             </button>
           </>
-        ) : action ? (
+        )}
+        
+        {action === "chat" && (
           <button
             onClick={startChat}
-            type="button"
-            className={`w-full text-white bg-gradient-to-br ${
-              loading
-                ? "from-purple-600/10 to-blue-500/10 "
-                : "from-purple-600 to-blue-500"
-            }  hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2`}
+            className="w-full py-3 text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors"
           >
             Start Chatting
           </button>
-        ) : (
-          ""
         )}
       </div>
-      <GithubButton />
+      
+      
     </div>
   );
 };
